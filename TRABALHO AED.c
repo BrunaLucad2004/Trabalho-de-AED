@@ -2,106 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Dados dos produtos
-char *produtos[100];
+// Dados dos produtos
+char produtos[100][50];
 int quantidades[100];
-int estoque[100][3];
+float precos[100];
 float vendas_totais[100];
 
-// Contador de produtos
+// Dados das vendas
+int vendas_id_produto[100];
+int vendas_quantidade[100];
+float vendas_valor_individual[100]; 
 int contador = 0;
+int contador_vendas = 0;
 
-//Função para adicionar produto
-void adicionar_produto(){
-	int quantidade, categoria = 0, preco;
-	char *nome[25];
-	printf("Digite o Nome do produto: ");
-	scanf("%s", nome);
-	printf("Digite a Quantidade de produtos: ");
-	scanf("%d", &quantidade);
-	printf("Digite o Preco do produto: ");
-	scanf("%d", &preco);
-            	
-    cadastrar_produto(*nome, quantidade, preco, categoria);
-}
+// Prototipo das funÃ§Ãµes
+void Cadastrar_Produto(char *nome, int quantidade, float preco);
+void Adicionar_Produto();
+void Listar_Produtos();
+void Consultar_Item();
+void Ver_Matriz_Estoque();
+void Vender_Produto(int id, int pecas);
+void Calcular_Total_Vendas();
+void Ver_Matriz_Vendas();
 
+// Main
+int main(void) {
+    // Exemplo de produtos
+    Cadastrar_Produto("Camisa", 10, 35.0);
+    Cadastrar_Produto("Calca", 5, 20.0);
 
-// Função para cadastrar produto
-void cadastrar_produto(char *nome, int quantidade, int preco, int categoria) {
-    produtos[contador] = nome;
-    quantidades[contador] = quantidade;
-    estoque[contador][0] = preco;
-    estoque[contador][1] = categoria;
-    estoque[contador][2] = 0;
-    vendas_totais[contador] = 0;
-    contador++;
-}
-
-// Função para listar produtos
-void listar_produtos() {
-	int i;
-    for ( i = 0; i < contador; i++) {
-        printf("%d - %s\n", i, produtos[i]);
-    }
-}
-
-// Função para consultar estoque
-void consultar_estoque(){
-    
-	int id;
-    printf("Digite o ID do produto: ");
-    scanf("%d", &id);
-
-    if (id >= 0 && id < contador) {
-        printf("Nome: %s\n", produtos[id]);
-        printf("Quantidade: %d\n", quantidades[id]);
-        printf("Preco: %d\n", estoque[id][1]);
-        printf("Vendas totais: %.2f\n", vendas_totais[id]);
-    } else {
-        printf("Produto nao encontrado.\n");
-    }
-}
-
-//ver a matriz de estoque
-
-void ver_Matriz(){
-	int i, j;
-	for(i=0; i<=contador; i++){
-		for(j=0; j< 3; j++){
-			printf(estoque[i][j]);
-			printf(" ");
-		}
-		printf(" ");
-	}
-}
-
-// Função para vender produto
-void vender_produto(int id, int pecas){
-    if (quantidades[id] > 0) {
-        quantidades[id] = quantidades[id] - pecas;
-        estoque[id][2]= estoque [id][2] + pecas;
-        vendas_totais[id] = vendas_totais[id] + (estoque[id][0] * pecas);
-    } else {
-        printf("Estoque insuficiente.\n");
-    }
-}
-
-// Função para calcular o total de vendas
-void calcular_total_vendas() {
-    float total = 0;
-    int i;
-    for ( i = 0; i < contador; i++) {
-        total += vendas_totais[i];
-    }
-    printf("Total de vendas: R %.2f\n", total);
-}
-
-int main(void){
-	
-	// Exemplo de produtos
-    cadastrar_produto("Camisa", 10, 35, 0);
-    cadastrar_produto("Calca", 5, 20, 0);
-	
     // Menu
     int opcao;
     do {
@@ -110,14 +39,15 @@ int main(void){
         printf("2 - Vender produto\n");
         printf("3 - Adicionar produto\n");
         printf("4 - Consultar estoque\n");
-        printf("5 - Calcular total de vendas\n");
+        printf("5 - Consultar item\n");
+        printf("6 - Calcular total de vendas\n");
         printf("0 - Sair\n");
         printf("\nDigite a opcao desejada: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                listar_produtos();
+                Listar_Produtos();
                 break;
             case 2:
                 printf("\nDigite o ID do produto a ser vendido: ");
@@ -126,25 +56,120 @@ int main(void){
                 printf("\nDigite a quantidade de produtos a ser vendido: ");
                 int quantidade;
                 scanf("%d", &quantidade);
-                vender_produto(index, quantidade);
+                Vender_Produto(index, quantidade);
                 break;
             case 3:
-                adicionar_produto();
+                Adicionar_Produto();
                 break;
             case 4:
-                ver_Matriz();
+                Ver_Matriz_Estoque();
                 break;
             case 5:
-                calcular_total_vendas();
+            	Consultar_Item();
+            	break;
+            case 6:
+                Calcular_Total_Vendas();
                 break;
             case 0:
                 printf("Saindo...\n");
                 break;
             default:
-            	printf("Opcao invalida\n");
-            	break;
+                printf("Opcao invalida\n");
+                break;
         }
-    }while(opcao != 0);
+    } while (opcao != 0);
 
-	return 0;
+    return 0;
+}
+
+// FunÃ§Ãµes
+
+void Cadastrar_Produto(char *nome, int quantidade, float preco) {
+    strcpy(produtos[contador], nome);
+    quantidades[contador] = quantidade;
+    precos[contador] = preco;
+    vendas_totais[contador] = 0;
+    contador++;
+}
+
+void Adicionar_Produto() {
+    int quantidade;
+    float preco;
+    char nome[50];
+    printf("Digite o Nome do produto: ");
+    scanf("%s", nome);
+    printf("Digite a Quantidade de produtos: ");
+    scanf("%d", &quantidade);
+    printf("Digite o Preco do produto: ");
+    scanf("%f", &preco);
+
+    Cadastrar_Produto(nome, quantidade, preco);
+}
+
+void Listar_Produtos() {
+    int i;
+    for (i = 0; i < contador; i++) {
+        printf("%d - %s\n", i, produtos[i]);
+    }
+}
+
+void Consultar_Item() {
+    int id;
+    printf("Digite o ID do produto: ");
+    scanf("%d", &id);
+
+    if (id >= 0 && id < contador) {
+        printf("Nome: %s\n", produtos[id]);
+        printf("Quantidade: %d\n", quantidades[id]);
+        printf("Preco: %.2f\n", precos[id]);
+        printf("Vendas totais: %.2f\n", vendas_totais[id]);
+    } else {
+        printf("Produto nao encontrado.\n");
+    }
+}
+
+void Ver_Matriz_Estoque() {
+    int i;
+
+    printf("ID\tQuantidade\tPreco\n");
+
+    for (i = 0; i < contador; i++) {
+        printf("%d\t%d\t\t%.2f\n", i, quantidades[i], precos[i]);
+    }
+}
+
+void Vender_Produto(int id, int pecas) {
+    if (quantidades[id] >= pecas) {
+        quantidades[id] -= pecas;
+        float valor_venda = precos[id] * pecas;
+
+        vendas_totais[id] += valor_venda;
+        vendas_id_produto[contador_vendas] = id;
+        vendas_quantidade[contador_vendas] = pecas;
+        vendas_valor_individual[contador_vendas] = valor_venda;
+
+        contador_vendas++;
+    } else {
+        printf("Estoque insuficiente.\n");
+    }
+}
+
+void Ver_Matriz_Vendas() {
+    printf("ID\tQuantidade Vendida\tValor da Venda\n");
+	int i;
+    for ( i = 0; i < contador_vendas; i++) {
+        printf("%d\t%d\t\t\t%.2f\n", vendas_id_produto[i], vendas_quantidade[i], vendas_valor_individual[i]);
+    }
+}
+
+void Calcular_Total_Vendas() {
+    float total = 0;
+    int i;
+    for (i = 0; i < contador; i++) {
+        total += vendas_totais[i];
+    }
+    printf("Total de vendas: R$ %.2f\n", total);
+
+    printf("\nMatriz de Vendas:\n");
+    Ver_Matriz_Vendas();
 }
