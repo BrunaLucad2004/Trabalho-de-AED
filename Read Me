@@ -1,0 +1,19 @@
+Gerenciador de Estoque e Vendas
+
+Escreva um programa em C que implemente um gerenciador de estoque e vendas. O programa deve ter as seguintes funções:
+
+- Listar todos os produtos: o programa deve exibir na tela todos os produtos armazenados.
+
+- Cadastrar um produto: o usuário deve informar o nome, o preço e a quantidade em estoque do produto. O programa deve validar os dados informados e armazenar o produto.
+
+- Consultar um produto: o usuário deve informar o código do produto que deseja consultar. O programa deve verificar se o produto existe na estrutura de dados e exibir seus dados na tela.
+
+- Repor um produto: o usuário deve informar o código do produto e a quantidade que deseja repor. O programa deve verificar se o produto existe na estrutura de dados e atualizar sua quantidade.
+
+- Registrar uma venda: o usuário deve informar o código e a quantidade do produto que deseja vender. O programa deve verificar se o produto existe na estrutura de dados e se há quantidade suficiente em estoque. Se sim, o programa deve atualizar o estoque do produto, calcular o valor total da venda e o lucro obtido. Se não, o programa deve informar ao usuário que a venda não pode ser realizada.
+
+- Visualizar o Estoque: a função deve exibir todos os produtos e suas quantidades em estoque. 
+
+- Gerar um relatório de Vendas: o programa deve gerar um relatório com as seguintes informações: o valor total de vendas, o lucro total e o produto mais vendido.
+
+O programa deve ter um menu que ofereça ao usuário as opções de cadastrar, consultar, listar, repor, registrar venda, ver o estoque, gerar relatório de vendas e sair do programa. O programa deve tratar de possíveis erros de entrada e saída de dados.
