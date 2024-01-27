@@ -68,7 +68,7 @@ int main(void) {
                 Matriz_Estoque();
                 break;
             case 5:
-                printf("Digite o ID do produto: \n");
+                printf("Digite o ID do produto: ");
                 int id;
                 scanf("%d", &id);
                 Consultar_Item(id);
@@ -92,7 +92,7 @@ int main(void) {
                 printf("Saindo...\n");
                 break;
             default:
-                printf("Opção inválida\n");
+                printf("Opcao invalida\n");
                 break;
         }
     } while (opcao != 0);
@@ -139,7 +139,7 @@ void Registrar_Produto() {
         Cadastrar_Produto(nome, quantidade, preco);
     } else {
         // caso o produto ja existe
-        printf("Produto '%s' já existe. Não é possível adicionar novamente.\n", nome);
+        printf("Produto '%s' ja existe. Nao e possivel adicionar novamente.\n", nome);
     }
 }
 
@@ -154,15 +154,15 @@ void Consultar_Item(int index) {
     if (index >= 0 && index < contador) {
         printf("Nome: %s\n", produtos[index]);
         printf("Quantidade: %d\n", quantidades[index]);
-        printf("Preço: %.2f\n", precos[index]);
+        printf("Preco: %.2f\n", precos[index]);
     } else {
-        printf("Produto não encontrado.\n");
+        printf("Produto nao encontrado.\n");
     }
 }
 
 void Matriz_Estoque() {
     int i;
-    printf("ID\tQuantidade\tPreço\n");
+    printf("ID\tQuantidade\tPreco\n");
 
     for (i = 0; i < contador; i++) {
         printf("%d\t%d\t\t%.2f\n", i, quantidades[i], precos[i]);
@@ -214,6 +214,6 @@ void Repor_Estoque(int index, int quantidade_adicionada) {
         printf("Estoque do produto '%s' reposto com sucesso!\n", produtos[index]);
         printf("Nova quantidade: %d\n", quantidades[index]);
     } else {
-        printf("Produto não encontrado.\n");
+        printf("Produto nao encontrado.\n");
     }
 }
